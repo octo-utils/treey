@@ -2,9 +2,11 @@
 "use strict";
 import objectAssignProperties from 'object-assign-properties'
 
-export const unreachable = Symbol("symbol_unreachable");
-
 export function noop() {}
+
+export function pass(sth) {
+  return sth;
+}
 
 export function always(value) {
   return _ => value;

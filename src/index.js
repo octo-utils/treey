@@ -3,8 +3,7 @@
 import EventEmitter from "events"
 import { nonenumerable, nonconfigurable, readonly } from "core-decorators"
 import { __, scopeProxy, varsProxy } from "./private/proxies"
-import { } from "./private/defs"
-import { noop, wrapDecorators, assignPrivate } from "./private/uf"
+import { noop, pass, wrapDecorators, assignPrivate } from "./private/uf"
 
 const private_decorator = wrapDecorators(
   nonenumerable,
@@ -50,36 +49,36 @@ class TreeyScope {
   }
 
   get vars() {
-    const self = this;
-    return {
-      ...self[__.vars_raw],
-      @readonly
-      get $children() {
-        return self[__.vars_raw].__children
-      }
-    }
+    return this[__.vars];
   }
 
   @private_decorator
-  toData() {
+  toData(deep = false) {
     return this[__.todos].reduce(
       (last, todo) => last.then(_ => Promise.resolve(todo())),
       Promise.resolve()
     )
       .then(_ => {
-        this[__.vars_raw].__children.length = 0;
-        return this.vars
+        const self = this;
+        self[__.vars_raw].__children.length = 0;
+        return {
+          ...self[__.vars_raw],
+          @readonly
+          get $children() {
+            return self[__.vars_raw].__children
+          }
+        }
       })
-      .then(vars_to_return => this[__.children_scopes].reduce(
+      .then(deep ? (vars_to_return => this[__.children_scopes].reduce(
         (last, [name, scope]) => last
-          .then(_ => scope.toData())
+          .then(_ => scope.toData(deep))
           .then(data => {
             this[__.vars_raw].__children.push([name, data])
             return vars_to_return;
           })
         ,
         Promise.resolve(vars_to_return)
-      ))
+      )) : pass)
   }
 }
 

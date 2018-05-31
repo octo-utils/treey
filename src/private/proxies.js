@@ -43,14 +43,18 @@ function _scopeProxyHandler(scope_obj, emitter) {
 }
 
 export function varsProxy(var_obj, scope_proxy) {
-  return new Proxy(var_obj, _varsProxyHandler(scope_proxy))
+  return new Proxy(assign, _varsProxyHandler(var_obj, scope_proxy));
+
+  function assign(var_source) {
+    return Object.assign(var_obj, var_source);
+  }
 }
 
-function _varsProxyHandler(scope_proxy) {
+function _varsProxyHandler(var_obj, scope_proxy) {
   return {
-    get(var_obj, propName, receiver) {
+    get(_, propName, receiver) {
       const setValue = getValue => {
-        const last_value = var_obj[propName];
+        const last_value = Reflect.get(var_obj, propName);
         const value = typeof getValue === "function" ?
           getValue(_varsOperators(last_value)) : getValue;
 

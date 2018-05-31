@@ -34,7 +34,7 @@ describe("basic", function () {
       });
     });
 
-    return S.toData().then((data) => {
+    return S.toData(true).then((data) => {
       const data_children = data.$children;
       expect(data).have.property('some_global_variable', "some_thing");
       const targets_wrap = data_children.filter(([name]) => name === "targets");
