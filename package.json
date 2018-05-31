@@ -5,7 +5,9 @@
   "main": "lib/index.js",
   "scripts": {
     "gulp": "gulp",
-    "test": "gulp test"
+    "test": "gulp test",
+    "build-src": "gulp build",
+    "build-src-watch": "gulp build-watch"
   },
   "author": "",
   "license": "ISC",

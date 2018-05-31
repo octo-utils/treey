@@ -50,10 +50,13 @@ class TreeyScope {
   }
 
   get vars() {
-    // console.log("get vars", this[__.vars_raw])
+    const self = this;
     return {
-      ...this[__.vars_raw],
-      @private_decorator __children: this[__.vars_raw].__children
+      ...self[__.vars_raw],
+      @readonly
+      get $children() {
+        return self[__.vars_raw].__children
+      }
     }
   }
 
@@ -63,12 +66,15 @@ class TreeyScope {
       (last, todo) => last.then(_ => Promise.resolve(todo())),
       Promise.resolve()
     )
-      .then(_ => this.vars)
+      .then(_ => {
+        this[__.vars_raw].__children.length = 0;
+        return this.vars
+      })
       .then(vars_to_return => this[__.children_scopes].reduce(
         (last, [name, scope]) => last
           .then(_ => scope.toData())
           .then(data => {
-            vars_to_return.__children.push([name, data])
+            this[__.vars_raw].__children.push([name, data])
             return vars_to_return;
           })
         ,

@@ -35,12 +35,12 @@ gulp.task('build', _ => {
 
 gulp.task('test', _ => {
   return gulp.src(['./test/test.js', './test/test.*.js'], {read: false, allowEmpty: true})
-    .pipe(mocha({reporter: 'nyan'}))
+    .pipe(mocha({reporter: 'spec'}))
 })
 
 gulp.task('build-then-test', gulp.series(['build', 'test']))
 
 gulp.task('build-watch', gulp.series(['build-then-test'], _ => {
-  return gulp.watch(['./src/**/*.js', './test/**/*'], gulp.series(['build-then-test']))
+  return gulp.watch(['./src/**/*.js', './test/**/*.js'], gulp.series(['build-then-test']))
 }))
 
