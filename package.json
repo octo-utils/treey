@@ -9,7 +9,7 @@
     "build-src": "gulp build",
     "build-src-watch": "gulp build-watch"
   },
-  "author": "",
+  "author": "tommyZZM",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.47",
@@ -18,8 +18,6 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.47",
     "@babel/plugin-transform-modules-commonjs": "^7.0.0-beta.47",
     "@babel/preset-env": "^7.0.0-beta.47",
-    "babel-plugin-macros": "^2.2.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "chai": "^4.1.2",
     "chai-spies": "^1.0.0",
     "core-decorators": "^0.20.0",
@@ -32,6 +30,7 @@
     "object-assign-properties": "0.0.32"
   },
   "dependencies": {
-    "is-plain-object": "^2.0.4"
+    "is-plain-object": "^2.0.4",
+    "ramda": "^0.25.0"
   }
 }
